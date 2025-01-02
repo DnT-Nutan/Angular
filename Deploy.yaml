@@ -19,7 +19,7 @@ spec:
         image: nginx:latest
         ports:
         - containerPort: 80
-volumeMounts:
+        volumeMounts:  # Correct indentation here
         - mountPath: /usr/share/nginx/html
           name: nginx-storage
       volumes:
