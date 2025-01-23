@@ -8,6 +8,11 @@ trigger:
 
 pool: 'laptops'
 
+variables:
+  dockerImageName: 'pipeline-app'  # Docker image name (you can adjust this)
+  dockerRegistryServiceConnection: 'https://hub.docker.com'  # Replace with your Docker registry service connection
+  imageTag: 'nginx:latest'  # Tag for the Docker image
+
 steps:
 - task: NodeTool@0
   inputs:
@@ -19,3 +24,11 @@ steps:
     npm install -g @angular/cli
     npm run build
   displayName: 'npm install and build'
+
+
+
+
+
+
+
+
