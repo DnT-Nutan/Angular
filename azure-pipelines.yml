@@ -29,6 +29,25 @@ steps:
     docker run -d -p 8081:80 my-react-app
   displayName: 'Build, tag, and push Docker image to ACR'
 
+- bash: |
+    echo "Updating deployment.yaml with the correct image tag..."
+
+    sed -i "s|image: azregistry.azurecr.io/my-react-app:.*|image: azregistry.azurecr.io/my-react-app:$(Build.BuildId)|"Deployment.yaml
+    cat Deployment.yaml
+  displayName: 'Update Deployment YAML with correct image tag'
+
+# Step 5: Deploy Kubernetes resources (Deployment and Service) to AKS
+- bash: |
+    echo "Deploying Kubernetes resources..."
+    kubectl apply -f Deployment.yaml
+    kubectl apply -f service.yaml
+  displayName: 'Deploy Kubernetes Deployment and Service'
+
+# Step 6: Verify Kubernetes Deployment and Service status
+- script: |
+    kubectl rollout status deployment/my-react-app
+    kubectl get services my-react-app-service
+  displayName: 'Verify Kubernetes Deployment and Service'
 
 
 
