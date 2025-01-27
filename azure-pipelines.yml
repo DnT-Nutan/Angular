@@ -20,10 +20,6 @@ steps:
     npm run build
   displayName: 'npm install and build'
 
-#- script: |
-#    curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
-#  displayName: 'Install Azure CLI'
-
 - script: |
     docker build -t my-react-app -f ./Dockerfile .
     docker images
