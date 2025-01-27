@@ -1,8 +1,3 @@
-# Node.js with Angular
-# Build a Node.js project that uses Angular.
-# Add steps that analyze code, save build artifacts, deploy, and more:
-# https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
-
 trigger:
 - main
 
@@ -14,7 +9,7 @@ steps:
     versionSpec: '20.x'
   displayName: 'Install Node.js'
 
-- script: | 
+- script: |
     npm install 
     npm install -g @angular/cli
     npm run build
@@ -23,7 +18,7 @@ steps:
 - script: |
     docker build -t my-react-app -f ./Dockerfile .
     docker images
-    az acr login --name azregistry 
+    az acr login --name azregistry
     docker tag my-react-app:latest azregistry.azurecr.io/my-react-app:latest
     docker push azregistry.azurecr.io/my-react-app:latest
     docker run -d -p 8080:80 my-react-app
@@ -31,22 +26,21 @@ steps:
 
 - bash: |
     echo "Updating deployment.yaml with the correct image tag..."
-    sed -i "s|image: azregistry.azurecr.io/my-react-app:.*|image: azregistry.azurecr.io/my-react-app:$(Build.BuildId)|"Deployment.yaml
+    sed -i "s|image: azregistry.azurecr.io/my-react-app:.*|image: azregistry.azurecr.io/my-react-app:$(Build.BuildId)|" Deployment.yaml
     cat Deployment.yaml
   displayName: 'Update Deployment YAML with correct image tag'
 
-# Step 5: Deploy Kubernetes resources (Deployment and Service) to AKS
 - bash: |
     echo "Deploying Kubernetes resources..."
-    kubectl apply -f Deployment.yaml
-    kubectl apply -f service.yaml
+    kubectl apply -f Deployment.yaml --validate=false
+    kubectl apply -f service.yaml --validate=false
   displayName: 'Deploy Kubernetes Deployment and Service'
 
-# Step 6: Verify Kubernetes Deployment and Service status
-#- script: |
- #   kubectl rollout status deployment/my-react-app
-  #  kubectl get services my-react-app-service
- # displayName: 'Verify Kubernetes Deployment and Service'
+- script: |
+    kubectl rollout status deployment/my-react-app
+    kubectl get services my-react-app-service
+  displayName: 'Verify Kubernetes Deployment and Service'
+
 
 
 
