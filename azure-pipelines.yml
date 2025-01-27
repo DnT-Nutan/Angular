@@ -20,6 +20,17 @@ steps:
     npm run build
   displayName: 'npm install and build'
 
+- task: AzureCLI@2
+  inputs:
+    azureSubscription: 'Azure-Cloud-Account-DNT'
+    scriptType: 'bash'
+    scriptLocation: 'inlineScript'
+    inlineScript: |
+      az acr login --name azregistry
+      az aks install-cli
+      az aks get-credentials --resource-group resoure-grp --name pipeline-aks
+
+
 - script: |
     docker build -t my-react-app -f ./Dockerfile .
     docker images
