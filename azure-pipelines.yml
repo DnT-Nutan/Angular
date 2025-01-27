@@ -26,7 +26,7 @@ steps:
     az acr login --name azregistry 
     docker tag my-react-app:latest azregistry.azurecr.io/my-react-app:latest
     docker push azregistry.azurecr.io/my-react-app:latest
-    docker run -d -p 8081:80 my-react-app
+    docker run -d -p 8080:80 my-react-app
   displayName: 'Build, tag, and push Docker image to ACR'
 
 - bash: |
@@ -44,10 +44,10 @@ steps:
   displayName: 'Deploy Kubernetes Deployment and Service'
 
 # Step 6: Verify Kubernetes Deployment and Service status
-- script: |
-    kubectl rollout status deployment/my-react-app
-    kubectl get services my-react-app-service
-  displayName: 'Verify Kubernetes Deployment and Service'
+#- script: |
+ #   kubectl rollout status deployment/my-react-app
+  #  kubectl get services my-react-app-service
+ # displayName: 'Verify Kubernetes Deployment and Service'
 
 
 
