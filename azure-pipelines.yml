@@ -27,6 +27,7 @@ steps:
     scriptLocation: 'inlineScript'
     inlineScript: |
       az acr login --name azregistry
+      az run
       az aks install-cli
       az aks get-credentials --resource-group resoure-grp --name pipeline-aks
 
