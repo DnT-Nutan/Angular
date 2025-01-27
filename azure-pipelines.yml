@@ -20,6 +20,18 @@ steps:
     npm run build
   displayName: 'npm install and build'
 
+- script: |   
+    docker build -t my-react-app -f ./Dockerfile .
+    docker images
+    docker run -d -p 8080:80 my-react-app
+
+  displayName: 'Build and run Docker image'
+
+
+
+
+
+
 
 
 
