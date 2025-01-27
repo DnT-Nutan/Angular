@@ -21,13 +21,18 @@ steps:
   displayName: 'npm install and build'
 
 - script: |
+    curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+  displayName: 'Install Azure CLI'
+
+- script: |
     docker build -t my-react-app -f ./Dockerfile .
     docker images
-    az acr login --name azregistry
-    docker tag my-react-app:latest azregistry.azurecr.io/my-react-app:latest  
-    docker push azregistry.azurecr.io/my-react-app:latest  
+    az acr login --name azregistry  # Login to Azure Container Registry
+    docker tag my-react-app:latest azregistry.azurecr.io/my-react-app:latest
+    docker push azregistry.azurecr.io/my-react-app:latest
     docker run -d -p 8081:80 my-react-app
   displayName: 'Build, tag, and push Docker image to ACR'
+
 
 
 
