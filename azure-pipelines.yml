@@ -26,8 +26,8 @@ steps:
     scriptType: 'bash'
     scriptLocation: 'inlineScript'
     inlineScript: |
+      az login
       az acr login --name azregistry
-      az run
       az aks install-cli
       az aks get-credentials --resource-group resoure-grp --name pipeline-aks
 
@@ -43,7 +43,6 @@ steps:
 
 - bash: |
     echo "Updating deployment.yaml with the correct image tag..."
-
     sed -i "s|image: azregistry.azurecr.io/my-react-app:.*|image: azregistry.azurecr.io/my-react-app:$(Build.BuildId)|"Deployment.yaml
     cat Deployment.yaml
   displayName: 'Update Deployment YAML with correct image tag'
