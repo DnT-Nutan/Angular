@@ -30,7 +30,7 @@ spec:
     - protocol: TCP
       port: 80
       targetPort: 80
-  type: LoadBalancer
+  type: ClusterIP
 
 ---
 apiVersion: networking.k8s.io/v1
@@ -62,7 +62,7 @@ spec:
 apiVersion: v1
 kind: Secret
 metadata:
-  name: indians-tls 
+  name: parties-tls 
   namespace: default
 type: kubernetes.io/tls
 data:
