@@ -19,8 +19,8 @@ steps:
     docker build -t my-react-app -f ./Dockerfile .
     docker images
     az acr login --name azregistry
-    docker tag my-react-app:latest azregistry.azurecr.io/my-react-app:latest
-    docker push azregistry.azurecr.io/my-react-app:latest
+    docker tag my-react-app:242 azregistry.azurecr.io/my-react-app:242
+    docker push azregistry.azurecr.io/my-react-app:242
     docker run -d -p 8080:80 my-react-app
   displayName: 'Build, tag, and push Docker image to ACR'
 
