@@ -26,7 +26,7 @@ steps:
 
 - bash: |
     echo "Updating deployment.yaml with the correct image tag..."
-    sed -i "s|image: azregistry.azurecr.io/my-react-app:.*|image: azregistry.azurecr.io/my-react-app:$(Build.BuildId)|" Deployment.yaml
+    sed -i "s|image: azregistry.azurecr.io/my-react-app:.*|image: azregistry.azurecr.io/my-react-app:latest|" Deployment.yaml
     cat Deployment.yaml
   displayName: 'Update Deployment YAML with correct image tag'
 
