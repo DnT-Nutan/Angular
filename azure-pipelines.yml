@@ -36,10 +36,7 @@ steps:
     kubectl apply -f service.yaml --validate=false
   displayName: 'Deploy Kubernetes Deployment and Service'
 
-- script: |
-    kubectl rollout status deployment/my-react-app
-    kubectl get services my-react-app-service
-  displayName: 'Verify Kubernetes Deployment and Service'
+
 
 
 
