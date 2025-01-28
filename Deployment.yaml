@@ -15,10 +15,10 @@ spec:
       containers:
         - name: my-react-app
           image: azregistry.azurecr.io/my-react-app:latest
-      imagePullSecrets:
-        - name: acr-auth
           ports:
             - containerPort: 80
+      imagePullSecrets:
+        - name: acr-auth
 
 ---
 apiVersion: v1
