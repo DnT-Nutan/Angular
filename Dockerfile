@@ -26,7 +26,7 @@ FROM nginx:stable-alpine
  
 # Copy the built Angular app to Nginx's default static directory
 
-COPY --from=builder /app/dist/angular-conduit/browser/ /usr/share/nginx/html/
+COPY --from=builder /app/dist/angular-conduit/browser/* /usr/share/nginx/html/
  
 # Expose port 80
 
