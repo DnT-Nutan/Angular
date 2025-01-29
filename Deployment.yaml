@@ -43,12 +43,11 @@ metadata:
 spec:
   ingressClassName: nginx
   tls:
-    secretName: parties-tls
-  - hosts:
-    - parties.p.frii.site
-   
+  - secretName: parties.tls
   rules:
   - host: parties.p.frii.site
+#  rules:
+#  - host: parties.p.frii.site
     http:
       paths:
       - path: /
