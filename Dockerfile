@@ -32,7 +32,7 @@ RUN rm -rf /usr/share/nginx/html/*
  
 # Copy all files from the dist directory to the Nginx HTML directory
 
-COPY --from=builder /app/dist/ /usr/share/nginx/html/
+COPY --from=builder /app/angular-conduit/browser/build/ /usr/share/nginx/html/
  
 # Expose port 80 to allow external access
 
