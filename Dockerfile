@@ -1,34 +1,32 @@
-# Use an official Node.js image for building the React app
+# Use Node.js to build the Angular app
 
 FROM node:20.10.0 AS builder
  
-# Set the working directory inside the container
+# Set the working directory
 
 WORKDIR /app
  
-# Copy package.json and package-lock.json to install dependencies
+# Copy package files and install dependencies
 
 COPY package*.json ./
- 
-# Install dependencies
 
 RUN npm install
  
-# Copy the rest of the application source code
+# Copy the entire project
 
 COPY . .
  
-# Build the React app
+# Build the Angular app
 
-RUN npm run build
+RUN npm run build --prod
  
 # Use Nginx for serving the production build
 
 FROM nginx:stable-alpine
  
-# Copy the build output to Nginx's default static directory
+# Copy the built Angular app to Nginx's default static directory
 
-COPY --from=builder /app/dist/angular-conduit/browser /usr/share/nginx/html
+COPY --from=builder /app/dist/angular-conduit/browser/ /usr/share/nginx/html/
  
 # Expose port 80
 
@@ -38,3 +36,4 @@ EXPOSE 80
 
 CMD ["nginx", "-g", "daemon off;"]
 
+ 
