@@ -19,14 +19,14 @@ steps:
     docker build -t my-react-app -f ./Dockerfile .
     docker images
     az acr login --name azregistry
-    docker tag my-react-app:latest azregistry.azurecr.io/my-react-app:latest
-    docker push azregistry.azurecr.io/my-react-app:latest
+    docker tag my-react-app:latest azregistry.azurecr.io/my-react-app:1
+    docker push azregistry.azurecr.io/my-react-app:1
 
   displayName: 'Build, tag, and push Docker image to ACR'
 
 - bash: |
     echo "Updating deployment.yaml with the correct image tag..."
-    sed -i "s|image: azregistry.azurecr.io/my-react-app:.*|image: azregistry.azurecr.io/my-react-app:latest|" Deployment.yaml
+    sed -i "s|image: azregistry.azurecr.io/my-react-app:.*|image: azregistry.azurecr.io/my-react-app:1|" Deployment.yaml
     cat Deployment.yaml
   displayName: 'Update Deployment YAML with correct image tag'
 
