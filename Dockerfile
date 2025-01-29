@@ -6,7 +6,7 @@ FROM node:20.10.0 AS builder
 
 WORKDIR /app
  
-# Copy package.json and package-lock.json to the container
+# Copy package.json and package-lock.json to install dependencies
 
 COPY package*.json ./
  
@@ -14,7 +14,7 @@ COPY package*.json ./
 
 RUN npm install
  
-# Copy the application source code to the container
+# Copy the rest of the application source code
 
 COPY . .
  
@@ -26,19 +26,15 @@ RUN npm run build
 
 FROM nginx:stable-alpine
  
-# Remove all existing content in /usr/share/nginx/html
+# Copy the build output to Nginx's default static directory
 
-RUN rm -rf /usr/share/nginx/html/*
+COPY --from=builder /app/build /usr/share/nginx/html
  
-# Copy all files from the dist directory to the Nginx HTML directory
-
-COPY --from=builder /app/angular-conduit/browser/build/ /usr/share/nginx/html/
- 
-# Expose port 80 to allow external access
+# Expose port 80
 
 EXPOSE 80
  
 # Start Nginx server
 
 CMD ["nginx", "-g", "daemon off;"]
- 
+
