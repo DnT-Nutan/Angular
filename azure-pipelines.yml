@@ -26,7 +26,7 @@ steps:
  
   - script: |
 
-      IMAGE_TAG=$(Build.BuildId)
+      IMAGE_TAG=1
 
       echo "Using image tag: $IMAGE_TAG"
  
