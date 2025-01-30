@@ -1,56 +1,75 @@
 trigger:
-- main
 
+  - main
+ 
 pool: 'laptops'
-
+ 
 steps:
-- task: NodeTool@0
-  inputs:
-    versionSpec: '20.x'
-  displayName: 'Install Node.js'
 
-- script: |
-    npm install 
-    npm install -g @angular/cli
-    npm run build
-  displayName: 'npm install and build'
+  - task: NodeTool@0
 
-- script: |
-    docker build -t my-react-app -f ./Dockerfile .
-    docker images
-    az acr login --name azregistry
-    docker tag my-react-app:latest azregistry.azurecr.io/my-react-app:1
-    docker push azregistry.azurecr.io/my-react-app:1
+    inputs:
 
-  displayName: 'Build, tag, and push Docker image to ACR'
+      versionSpec: '20.x'
 
-- bash: |
-    echo "Updating deployment.yaml with the correct image tag..."
-    sed -i "s|image: azregistry.azurecr.io/my-react-app:.*|image: azregistry.azurecr.io/my-react-app:1|" Deployment.yaml
-    cat Deployment.yaml
-  displayName: 'Update Deployment YAML with correct image tag'
+    displayName: 'Install Node.js'
+ 
+  - script: |
 
-- bash: |
-    echo "Deploying Kubernetes resources..."
-    kubectl apply -f Deployment.yaml --validate=false
-    kubectl apply -f service.yaml --validate=false
-  displayName: 'Deploy Kubernetes Deployment and Service'
+      npm install 
 
+      npm install -g @angular/cli
 
+      npm run build
 
+    displayName: 'npm install and build'
+ 
+  - script: |
 
+      IMAGE_TAG=$(Build.BuildId)
 
+      echo "Using image tag: $IMAGE_TAG"
+ 
+      # Build and tag the Docker image
 
+      docker build -t my-react-app:$IMAGE_TAG -f ./Dockerfile .
 
+      docker images
+ 
+      # Login to Azure Container Registry (ACR)
 
+      az acr login --name azregistry
+ 
+      # Tag the image for ACR
 
+      docker tag my-react-app:$IMAGE_TAG azregistry.azurecr.io/my-react-app:$IMAGE_TAG
+ 
+      # Push the image to ACR
 
+      docker push azregistry.azurecr.io/my-react-app:$IMAGE_TAG
 
+    displayName: 'Build, tag, and push Docker image to ACR'
+ 
+  - bash: |
 
+      IMAGE_TAG=$(Build.BuildId)
 
+      echo "Updating deployment.yaml with the correct image tag: $IMAGE_TAG"
+ 
+      sed -i "s|image: azregistry.azurecr.io/my-react-app:.*|image: azregistry.azurecr.io/my-react-app:$IMAGE_TAG|" Deployment.yaml
 
+      cat Deployment.yaml
 
+    displayName: 'Update Deployment YAML with correct image tag'
+ 
+  - bash: |
 
+      echo "Deploying Kubernetes resources..."
 
+      kubectl apply -f Deployment.yaml --validate=false
 
+      kubectl apply -f service.yaml --validate=false
 
+    displayName: 'Deploy Kubernetes Deployment and Service'
+
+ 
